@@ -32,6 +32,9 @@ public class SqsTestApplication {
 
   @SqsListener("test-queue")
   public void receive(String message) throws IOException, ClassNotFoundException {
+    System.out.println("======================================================");
+    System.out.println("message:");
+    System.out.println(message);
     List<S3EventNotificationRecord> records = readValue(
         readValue(message, SnsNotification.class).getMessage(), S3EventNotification.class)
             .getRecords();
@@ -39,8 +42,12 @@ public class SqsTestApplication {
       String key = record.getS3().getObject().getKey();
       S3Object object = s3
           .getObject(new GetObjectRequest("f4908ccb-df04-42aa-b8a8-185daf9fdff1", key));
+      System.out.println("======================================================");
       System.out.println(object);
+      System.out.println("======================================================");
+      System.out.println("contents:");
       printString(object.getObjectContent());
+      System.out.println("======================================================");
     }
   }
 
